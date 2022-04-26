@@ -1,0 +1,5 @@
+install.packages("classInt")
+install.packages("sf")
+install.packages("opendatatoronto")
+library("httr")
+library("readxl")
