@@ -3,6 +3,7 @@ title: "p5"
 author: "Yousuf Farhan"
 date: "4/25/2022"
 output: pdf_document
+bibliography: references.bib 
 ---
 
 ```{r setup, include=FALSE}
@@ -18,15 +19,19 @@ library(bibtex)
 
 # Introduction
 
-Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century,the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of consumer confidence in gold resemble the level of consumer confidence in cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining prices for gold, using linear regression.
+Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century,the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the price of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining prices for gold, cryptocurrencies and consumer confidence in G7 member states, using multiple linear regression.
 
 Several relevant scholarly sources were taken into consideration, and analyzed. However, the most notable
+\\
 
-#Data
+# Data
 
-This paper uses [@R-base] for statistical analyses with [@R-studioapi] as the intergrated development environment. Relevant packages include [@R-tidyverse], [@R-dplyr] and [@R-haven] for data management, manipulation and analysis.[@R-ggplot2] is used for the purposes of graphing and data visualization. [@R-bibtex] is used to generate a standardized citations that adhere to Bibtex standards. Multiple datasets were used. To analyze price points at various dates for cryptocurrencies a dataset from data.world.com [@cd] was used.  
+This paper uses [@R-base] for statistical analyses with [@R-studioapi] as the intergrated development environment. Relevant packages include [@R-tidyverse], [@R-dplyr] and [@R-haven] for data management, manipulation and analysis.[@R-ggplot2] is used for the purposes of graphing and data visualization. [@R-bibtex] is used to generate a standardized citations that adhere to Bibtex standards. Multiple datasets were used. To analyze price points at various dates for cryptocurrencies a dataset from data.world.com [@cd] was used. The data for consumer confidence among G7 member states was taken from the OECD website [@leading_indicators_2022].
+\\
 
-#Discussion
+# Discussion
+
+\\
 
 ## Future Research
 
@@ -35,6 +40,8 @@ Explore government policy reaction to control crypto and tax and regulate it.
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-GET("https://query.data.world/s/4zwqapph7shsnwskol4ljmq36ilff6", write_disk(tf <- tempfile(fileext = "data/crypto-data.xlsx")))
-cd <- read_excel(tf)
+#Assigns datasets to memorable variables
+cd <- read_excel("data/allcurrenciesfinal12.18.17.xlsx")
 ```
+\\
+\\
