@@ -17,7 +17,13 @@ library(ggplot2)
 library(bibtex)
 library(lubridate)
 ```
-
+```{=tex}
+\begin{centering}
+{\bf Abstract}
+\\
+Inaccurate forecasting, even if used to increase consumer confidence, seems to create catastrophic long-term results. By analyzing once-booming economies which experienced such catastrophes based on data provided by the IMF, we reach a conclusion that verifies just that; disproportionate, positive economic expectations are a precursor to economic collapse. Baseless yet optimistic forecasts made by private entities tend to yield similar results; overt optimism in forecasts may or may not facilitate short-term booms, but they do tend to wreck long-term havoc. This reproduction analyzes Beaudry and Willem's (2021), however, a notable observation is also made. A minor critique of their formula to calculate aggregates leads us to recomputing these values, which show their results to be slightly exaggerated, but their point is still applicable.
+\end{centering}
+```
 # Introduction
 
 Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century, the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the price of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining prices for gold, cryptocurrencies and levels of consumer confidence in OECD member states, using multiple linear regression, followed by how different levels of consumer confidence influence the prices of traditional stores of value, in this case represented by the price of gold and technologically savvy ones, measured by the price of Bitcoin
@@ -36,7 +42,7 @@ For the dataset for consumer confidence among OECD member states [@leading_indic
 
 The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better. For gold, the dataset from the World Gold Council [@world-gold-council] is has two columns selected, one depicting the date and the other the price in United States' dollars. Then only the rows from the end of 2013 upto March 2022 are selected for further analysis.
 
-All three datasets' subset containing dates after September 2014 are then used for further analysis.
+All three datasets' subset containing dates after September 2014 are then used for further analysis using the Tidyverse package [@R-tidyverse].
 ```{r pressure, echo=FALSE, warning=FALSE}
 #Assigns datasets to memorable variables
 cd <- read_csv("data/BTC-USD.csv")
@@ -47,18 +53,54 @@ cc %>%
   filter(LOCATION=='OECD')
 cc <-aggregate(cc$Value, list(cc$TIME), FUN=mean)
 cg <- select(cg, c('Name','US dollar...2'))
-cc$Group.1 <- as.factor(cc$Group.1)
-cc$Group.1 <- as.Date(cc$Group.1, format="%Y-%m")
+# Selects the relevant time period in all three datasets after standardizing date formats
+cd %>%
+  mutate(cd$Date, ymd(cd$Date))
+cg %>%
+  mutate(cg$Name, ymd(cg$Name))
+cc %>%
+  mutate(cc$Group.1, ym(cc$Group.1))
 ```
 \\
 
 # Results
+
+
 ## Cumulative Results from all three datasets after data cleaning
+
+### A comparison between gold and Bitcoin
+
+Lets take a look at the price of Bitcoin during our selected time period.
 ```{r, echo=FALSE, fig.height=10}
+ggplot(data=cd, mapping = aes(x = cd$Date, y = cd$Close, color = cd$Close))+
+  geom_line()+
+  #scale_x_date(date_breaks = "1 Year")+
 
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    y="Bitcoin Price in USD",
+  x=("Date") ,
+  caption = "Bitcoin Price in USD"
+  )
+```
+```{r, echo=FALSE, fig.height=10}
+ggplot(data=cg, mapping = aes(x = cg$Name, y = cg$`US dollar...2`, color = cg$`US dollar...2`))+
+  geom_line()+
+  #scale_x_date(date_breaks = "1 Year")+
 
-ggplot(data=cc, mapping = aes(x= cc$Group.1, y = cc$x, color = cc$x)) +
-  
+  coord_flip() +
+  theme_minimal() +
+  labs(
+    y="Price of Gold in USD",
+  x=("Date") ,
+  caption = "Price of Gold in USD"
+  )
+```
+
+```{r, echo=FALSE, fig.height=10}
+ggplot(data=cc, mapping = aes(x= cc$Group.1,y =cc$x,color=cc$x)) +
+  #geom_line()+
   geom_point()+
   #scale_x_date(date_breaks = "1 Year")+
 
@@ -66,25 +108,23 @@ ggplot(data=cc, mapping = aes(x= cc$Group.1, y = cc$x, color = cc$x)) +
   theme_minimal() +
   labs(
     y="Consumer Confidence Level (Average = 100)",
-  x=("Year") ,
+  x=("Date") ,
   caption = "Consumer Confidence among OECD member states"
   )
 ```
 
-
 # Discussion
 
-dsadsa
+## The findings of this paper
 
-\\
-
+## Trends that stood out
 
 
 ## Future Research
 
 Explore government policy reaction to control crypto and tax and regulate it.
 
-You can also embed plots, for example:
+
 
 
 \\
