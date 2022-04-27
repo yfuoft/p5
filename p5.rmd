@@ -21,19 +21,19 @@ library(bibtex)
 
 Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century, the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the price of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining prices for gold, cryptocurrencies and levels of consumer confidence in OECD member states, using multiple linear regression, followed by how different levels of consumer confidence influence the prices of traditional stores of value, in this case represented by the price of gold and technologically savvy ones, measured by the cumulative price of popular cryptocurrencies.
 
-It should be noted that this paper compares the price of several cryptocurrencies and the global price of gold and contrasts it with the levels of consumer confidence among OECD member states.
+It should be noted that this paper compares the price of several cryptocurrencies and the global price of gold and contrasts it with the levels of consumer confidence among OECD member states to test the aforementioned hypothesis.
 \\
 
 # Data
 
 ## How the data was obtained
-This paper uses [@R-base] for statistical analyses with [@R-studioapi] as the intergrated development environment. Relevant packages include [@R-tidyverse], [@R-dplyr] and [@R-haven] for data management, manipulation and analysis.[@R-ggplot2] is used for the purposes of graphing and data visualization. [@R-bibtex] is used to generate a standardized citations that adhere to Bibtex standards. Multiple datasets were used. To analyze price points at various dates for cryptocurrencies a dataset from data.world.com [@cd] was used. The data for consumer confidence among OECD member states was taken from the OECD website [@leading_indicators_2022]. Gold prices were taken from 
+This paper uses [@R-base] for statistical analyses with [@R-studioapi] as the intergrated development environment. Relevant packages include [@R-tidyverse], [@R-dplyr] and [@R-haven] for data management, manipulation and analysis.[@R-ggplot2] is used for the purposes of graphing and data visualization. [@R-bibtex] is used to generate a standardized citations that adhere to Bibtex standards. Multiple datasets were used. To analyze price points at various dates for cryptocurrencies a dataset from data.world.com [@cd] was used. The data for consumer confidence among OECD member states was taken from the OECD website [@leading_indicators_2022]. Gold prices were taken from the World Gold Council [@world-gold-council].
 
 ## Cleaning the data
 
 For the dataset for consumer confidence among OECD member states [@leading_indicators_2022], a three-step cleaning process is applied. First, the Dplyer package [@R-dplyr] is used to sum all observations by 'TIME,' which the dataset uses to record the month and year. Then the same package is used to calculate the cumulative OECD average, by month for practical and readibility reasons. This is followed by removing the figures for the entire OECD to make the dataset specific to OECD member states using the Tidyverse package [@R-tidyverse].
 
-The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better.
+The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better. 
 ```{r pressure, echo=FALSE}
 #Assigns datasets to memorable variables
 cd <- read_excel("data/allcurrenciesfinal12.18.17.xlsx")
