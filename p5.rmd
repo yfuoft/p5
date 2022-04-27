@@ -20,9 +20,9 @@ library(lubridate)
 
 # Introduction
 
-Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century, the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the price of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining prices for gold, cryptocurrencies and levels of consumer confidence in OECD member states, using multiple linear regression, followed by how different levels of consumer confidence influence the prices of traditional stores of value, in this case represented by the price of gold and technologically savvy ones, measured by the cumulative price of popular cryptocurrencies.
+Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century, the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the price of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining prices for gold, cryptocurrencies and levels of consumer confidence in OECD member states, using multiple linear regression, followed by how different levels of consumer confidence influence the prices of traditional stores of value, in this case represented by the price of gold and technologically savvy ones, measured by the price of Bitcoin
 
-It should be noted that this paper compares the price of several cryptocurrencies and the global price of gold and contrasts it with the levels of consumer confidence among OECD member states to test the aforementioned hypothesis.
+It should be noted that this paper compares the price of one cryptocurrency and the global price of gold and contrasts it with the levels of consumer confidence among OECD member states to test the aforementioned hypothesis.
 \\
 
 # Data
@@ -35,12 +35,14 @@ This paper uses [@R-base] for statistical analyses with [@R-studioapi] as the in
 For the dataset for consumer confidence among OECD member states [@leading_indicators_2022], a three-step cleaning process is applied. First, the Dplyer package [@R-dplyr] is used to select rows which show the cumulative OECD figures. Then the average for each month is calculated. This is followed by removing the figures for the entire OECD to make the dataset specific to OECD member states using the Tidyverse package [@R-tidyverse]. The data parsing for this dataset is concluded by converting the string values for each month to the date type [@lubridate].
 
 The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better. For gold, the dataset from the World Gold Council [@world-gold-council] is has two columns selected, one depicting the date and the other the price in United States' dollars. Then only the rows from the end of 2013 upto March 2022 are selected for further analysis.
+
+All three datasets' subset containing dates after September 2014 are then used for further analysis.
 ```{r pressure, echo=FALSE, warning=FALSE}
 #Assigns datasets to memorable variables
-cd <- read_excel("data/allcurrenciesfinal12.18.17.xlsx")
+cd <- read_csv("data/BTC-USD.csv")
 cg <- read_excel("data/Prices.xlsx", sheet = "Monthly_Average")
 cc <- read_csv("data/DP_LIVE_27042022071642777.csv")
-# Filters the relevant variables and gets cumulative metrics by date by taking the per annum average
+# Filters the relevant variables and gets cumulative metrics by date by taking the per monthly average
 cc %>%
   filter(LOCATION=='OECD')
 cc <-aggregate(cc$Value, list(cc$TIME), FUN=mean)
