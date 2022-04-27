@@ -11,6 +11,7 @@ library(dplyr)
 library(haven)
 library(ggplot2)
 library(bibtex)
+library(lubridate)
 #Assigns datasets to memorable variables
 cd <- read_excel("data/allcurrenciesfinal12.18.17.xlsx")
 cc <- read_csv("data/DP_LIVE_27042022071642777.csv")
