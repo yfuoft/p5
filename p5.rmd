@@ -33,19 +33,21 @@ This paper uses [@R-base] for statistical analyses with [@R-studioapi] as the in
 
 For the dataset for consumer confidence among OECD member states [@leading_indicators_2022], a three-step cleaning process is applied. First, the Dplyer package [@R-dplyr] is used to sum all observations by 'TIME,' which the dataset uses to record the month and year. Then the same package is used to calculate the cumulative OECD average, by month for practical and readibility reasons. This is followed by removing the figures for the entire OECD to make the dataset specific to OECD member states using the Tidyverse package [@R-tidyverse].
 
-The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better. 
+The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better. For gold, the dataset from the World Gold Council [@world-gold-council] is has two columns selected, one depicting the date and the other the price in United States' dollars. Then only the rows from the end of 2013 upto March 2022 are selected for further analysis.
 ```{r pressure, echo=FALSE}
 #Assigns datasets to memorable variables
 cd <- read_excel("data/allcurrenciesfinal12.18.17.xlsx")
+cg <- read_excel("data/Prices.xlsx", sheet = "Monthly_Average")
 cc <- read_csv("data/DP_LIVE_27042022071642777.csv")
 # Filters and gets cumulative metrics by year by taking the per annum average
 cc %>%
-   dplyr::group_by(TIME) %>% 
-      summarise(mean(cc$Value))
+   dplyr::group_by(TIME) 
 cc %>%
   filter(LOCATION=='OECD')
+cg <- select(cg, c('Name','US dollar...2'))
 
-
+head(cg)
+  
 ```
 \\
 
