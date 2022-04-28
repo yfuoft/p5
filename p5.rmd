@@ -1,7 +1,7 @@
 ---
-title: "p5"
+title: "The Variation in Consumer Confidence and Alternative Currencies in the Age of Web 3.0"
 author: "Yousuf Farhan"
-date: "4/25/2022"
+date: "4/27/2022"
 output: pdf_document
 bibliography: references.bib 
 ---
@@ -10,7 +10,7 @@ bibliography: references.bib
 # This code block imports the needed R packages.
 library("httr")
 library("readxl")
-library("tidyverse")
+library(tidyverse)
 library(dplyr)
 library(haven)
 library(ggplot2)
@@ -21,7 +21,7 @@ library(lubridate)
 \begin{centering}
 {\bf Abstract}
 \\
-Inaccurate forecasting, even if used to increase consumer confidence, seems to create catastrophic long-term results. By analyzing once-booming economies which experienced such catastrophes based on data provided by the IMF, we reach a conclusion that verifies just that; disproportionate, positive economic expectations are a precursor to economic collapse. Baseless yet optimistic forecasts made by private entities tend to yield similar results; overt optimism in forecasts may or may not facilitate short-term booms, but they do tend to wreck long-term havoc. This reproduction analyzes Beaudry and Willem's (2021), however, a notable observation is also made. A minor critique of their formula to calculate aggregates leads us to recomputing these values, which show their results to be slightly exaggerated, but their point is still applicable.
+The replacement of the Gold Standard with fiat currency was a major change in how the value of gold was perceived. Gold was commonly seen as an alternative currency and store of value that is not subject to inflation and short-term economic booms and downturns. This paper finds that the value of gold increases consistently without any major variations that can be attributed to policy, taxation, consumer confidence or inflation. However, it also finds that gold as an alternative currency and store of value acts very different than Bitcoin. This can be attributed to the  latter being subject to speculative bubbles, both short and long-term, being free from supply chain issues and belonging to an immature market with little to no regulation, inconsistent taxation and easy access. These three factors do significantly impact the price of Bitcoin, as this paper clearly shows, it also shows how a change in the levels of consumer confidence often acts as a precursor to significant variation in the price of Bitcoin, which is then amplified by the aforementioned factors.
 \end{centering}
 ```
 
@@ -30,9 +30,11 @@ Inaccurate forecasting, even if used to increase consumer confidence, seems to c
 
 # Introduction
 
-Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century, the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the value of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining values for gold, cryptocurrencies and levels of consumer confidence in OECD member states, using multiple linear regression, followed by how different levels of consumer confidence influence the values of traditional stores of value, in this case represented by the value of gold and technologically savvy ones, measured by the value of Bitcoin
+Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century, the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the value of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining values for gold, cryptocurrencies and levels of consumer confidence in OECD member states, using multiple linear regression, followed by how different levels of consumer confidence influence the values of traditional stores of value, in this case represented by the value of gold and technologically savvy ones, measured by the value of Bitcoin.
 
 It should be noted that this paper compares the value of one cryptocurrency and the global value of gold and contrasts it with the levels of consumer confidence among OECD member states to test the aforementioned hypothesis. It will test the relationship that these three objects of interests share with each other individually and as a compounded result. 
+
+For practical and readibility reasons, all datasets are analyzed within a time frame of a few years, and monthly averages are compared.
 
 
 \newpage
@@ -50,7 +52,7 @@ For the dataset for consumer confidence among OECD member states [@leading_indic
 The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better. For gold, the dataset from the World Gold Council [@world-gold-council] is has two columns selected, one depicting the date and the other the value in United States' dollars. Then only the rows from the end of 2013 upto March 2022 are selected for further analysis.
 
 All three datasets' subset containing dates after September 2014 are then used for further analysis using the Tidyverse package [@R-tidyverse].     
-```{r pressure, echo=FALSE, warning=FALSE}
+```{r , echo=FALSE, warning=FALSE, error=True}
 #Assigns datasets to memorable variables
 cd <- read_csv("data/BTC-USD.csv")
 cg <- read_excel("data/Prices.xlsx", sheet = "Monthly_Average")
@@ -105,16 +107,16 @@ data.table::setnames(
 # Results
 
 
-## Cumulative Results from all three datasets after data cleaning
+## Comparing results from each dataset with another individually
 
 ### A comparison between gold and Bitcoin
 
-Lets take a look at the value of Bitcoin during our selected time period.
   
 
 ```{r, echo=FALSE, fig.height=10, warning=FALSE}
 ggplot(data=cd, mapping = aes(x = cd$Date, y = cd$Close, color = cd$Close))+
   geom_line()+
+  geom_point()+
   #scale_x_date(date_breaks = "1 Year")+
 
   coord_flip() +
@@ -128,33 +130,33 @@ ggplot(data=cd, mapping = aes(x = cd$Date, y = cd$Close, color = cd$Close))+
 
 \newpage
 
-Followed by the value of gold in USD in the same time period.
 
 ```{r, echo=FALSE, fig.height=10, warning=FALSE}
 ggplot(data=cg, mapping = aes(x = cg$Date, y = cg$value, color = cg$value))+
-  geom_line()+
+  #geom_line()+
+  geom_point()+
   #scale_x_date(date_breaks = "1 Year")+
 
   coord_flip() +
   theme_minimal() +
   labs(
-    y="value of Gold in USD",
+    y="value of Gold in USD per Oz",
   x=("Date") ,
-  caption = "value of Gold in USD"
+  caption = "Value of Gold in USD"
   )
 ```
 \newpage
 
 Lets combine the results to see if any significant correlation exists. We begin by combining the two datasets, creating a new one in the process.
 
-```{r, echo=FALSE, fig.height=10, warning=FALSE}
+```{r, echo=FALSE, fig.height=10, warning=FALSE,error = TRUE}
 cdg <- cd3
 
 
-cdg <- cbind(cdg, value = cg$value)
+cdg <- cbind(cdg, gold = cg$value)
 cdg |>
   ggplot(mapping = aes(x= cdg$Date)) +
-  geom_point(aes(y = cdg$value, color = "Gold"))+
+  geom_point(aes(y = cdg$gold, color = "Gold"))+
   geom_point(aes( y = cdg$Bitcoin, color = "Bitcoin")) +
 
   theme_classic()+
@@ -171,8 +173,14 @@ cdg |>
 \newpage
 
 
+
+
+
+\newpage
+
+### Consumer confidence in OECD member states relative to the price of gold
 ```{r, echo=FALSE, fig.height=10, warning=FALSE}
-ggplot(data=cc, mapping = aes(x= cc$Date,y =cc$x,color=cc$x)) +
+ggplot(data=cc, mapping = aes(x= cc$Date,y =cc$value,color=cc$value)) +
   #geom_line()+
   geom_point()+
   #scale_x_date(date_breaks = "1 Year")+
@@ -186,20 +194,83 @@ ggplot(data=cc, mapping = aes(x= cc$Date,y =cc$x,color=cc$x)) +
   )
 ```
 
+```{r, echo=FALSE, fig.height=10, warning=FALSE,error = TRUE}
+cdgc <- cdg
+
+cc <- tail(cc,-8)
+cdgc <- cbind(cdgc, cc = cc$value)
+cdgc |>
+  ggplot(mapping = aes(x= cdgc$Date)) +
+  geom_point(aes(y = cdgc$cc, color = "Consumer Confidence"))+
+  geom_point(aes( y = cdgc$gold, color = "Gold")) +
+
+  theme_classic()+
+  labs(
+    x = "Year",
+    y = "Values for the price of Gold in USD and consumer confidence among OECD member states",
+    color = "Legend",
+    caption = "Prices of Gold in USD per Oz and consumer confidence in the OECD "
+  ) +
+  coord_flip()
+
+```
+\newpage
+
+### Consumer Confidence in the OECD and the price of Bitcoin
+
+```{r, echo=FALSE, fig.height=10, warning=FALSE,error = TRUE}
+cdgc |>
+  ggplot(mapping = aes(x= cdgc$Date)) +
+  geom_point(aes(y = cdgc$cc, color = "Consumer Confidence"))+
+  geom_point(aes( y = cdgc$value, color = "Bitcoin")) +
+
+  theme_classic()+
+  labs(
+    x = "Year",
+    y = "Values for the price of Bitcoin in USD and consumer confidence among OECD member states",
+    color = "Legend",
+    caption = "Prices of Bitcoin in USD and consumer confidence in the OECD "
+  ) +
+  coord_flip()
+```
+
+## Cumulative comparisons
+```{r, echo=FALSE, fig.height=10, warning=FALSE,error = TRUE}
+cdgc |>
+  ggplot(mapping = aes(x= cdgc$Date)) +
+  geom_point(aes(y = cdgc$cc, color = "Consumer Confidence"))+
+  geom_point(aes( y = cdgc$value, color = "Bitcoin")) +
+  geom_point(aes( y = cdgc$gold, color = "Gold")) +
+  theme_classic()+
+  labs(
+    x = "Year",
+    y = "Values for the price of Bitcoin and gold per Oz in USD and consumer confidence among OECD member states",
+    color = "Legend",
+    caption = "Prices of Bitcoin in USD, gold and the level of consumer confidence in the OECD "
+  ) +
+  coord_flip()
+```
 \newpage
 
 # Discussion
 
 ## The findings of this paper
 
+In the absence of supply-related restrictions, gold and Bitcoin behave similarly in the context of demand. However, the variation in the prices of Bitcoin increased significantly at the dawn of the COVID-19 pandemic. One explanation for why the change in the prices of gold did not mirror the change in the prices of Bitcoin is the emergence of supply chain issues which Bitcoin was not subject to, and a general reluctance to avoid the exchange of tangible good to avoid the transmission of COVID-19.
+
+
+
 ## Trends that stood out
+
+Consumer confidence levels had little to no impact on the price of gold, contrasting previous academic literature on the topic [@wmtgm]. Furthermore, Bitcoin prices were a strong inverse amplification of consumer confidence levels, however, academic literature points out that this can ostensibly be caused by the cryptocurrency market not being mature enough to not greatly rely on speculative bubbles. In the context of Bitcoin prices, speculative bubbles can be triggered by changes in consumer confidence, but other factors such as policies and regulatory bodies play a more significant role [@baek_elbeck_2014]. 
+
 
 
 ## Future Research
 
-Explore government policy reaction to control crypto and tax and regulate it.
+As [@baek_elbeck_2014] explores in greater detail, the cryptocurrency market is immature, volatile and highly prone to speculative bubbles. It further demonstrates how policies and the actions of regulatory bodies greatly amplify the market demand for Bitcoin, causing immense variation in the price of Bitcoin (although this paper finds that a change in consumer confidence usually is a precursor to this). More research in how regulating, taxing and legislating the use of Bitcoin and other cryptocurrencies can predict prices, encourage or discourage their use and create new investment opportunities for retailers and investors.
 
-See if the lack of variation in the price of Gold during the COVID-19 pandemic was supply-driven.
+Since April 2017, any perceived correlation between the prices of Bitcoin and Gold was incorrect. The contrast became even more stark during the start of the COVID-19 pandemic, however this can be attributed to supply issues rather than just a lack of demand-driven price volatality, since unlike Bitcoin, gold is a tangible object and disrupted supply lines could have played a part. Exploring this phenomenon is beyond the scope of this paper.
 
 
 \newpage
