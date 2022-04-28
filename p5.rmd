@@ -30,9 +30,9 @@ Inaccurate forecasting, even if used to increase consumer confidence, seems to c
 
 # Introduction
 
-Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century, the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the price of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining prices for gold, cryptocurrencies and levels of consumer confidence in OECD member states, using multiple linear regression, followed by how different levels of consumer confidence influence the prices of traditional stores of value, in this case represented by the price of gold and technologically savvy ones, measured by the price of Bitcoin
+Since fiat currencies first becoming mainstream, consumer confidence in alternative stores of value and currencies has varied greatly. In the twenty-first century, the emergence of Web 3.0 technologies such as blockchain and smart contracts has paved the way for new stores of value to enter the arena. In particular, this paper analyses consumer behavior regarding the alternate stores of value of the future and whether consumer confidence regarding them fluctuates just like with traditional stores of value, such as gold and precious stones. The paper tests the following hypothesis; does the level of cumulative consumer confidence influence the value of gold and cryptocurrencies? It then takes a step further and tries to predict future trends by pre-defining values for gold, cryptocurrencies and levels of consumer confidence in OECD member states, using multiple linear regression, followed by how different levels of consumer confidence influence the values of traditional stores of value, in this case represented by the value of gold and technologically savvy ones, measured by the value of Bitcoin
 
-It should be noted that this paper compares the price of one cryptocurrency and the global price of gold and contrasts it with the levels of consumer confidence among OECD member states to test the aforementioned hypothesis. It will test the relationship that these three objects of interests share with each other individually and as a compounded result. 
+It should be noted that this paper compares the value of one cryptocurrency and the global value of gold and contrasts it with the levels of consumer confidence among OECD member states to test the aforementioned hypothesis. It will test the relationship that these three objects of interests share with each other individually and as a compounded result. 
 
 
 \newpage
@@ -41,13 +41,13 @@ It should be noted that this paper compares the price of one cryptocurrency and 
 # Data
 
 ## How the data was obtained
-This paper uses [@R-base] for statistical analyses with [@R-studioapi] as the intergrated development environment. Relevant packages include [@R-tidyverse], [@R-dplyr] and [@R-haven] for data management, manipulation and analysis.[@R-ggplot2] is used for the purposes of graphing and data visualization. [@R-bibtex] is used to generate a standardized citations that adhere to Bibtex standards. Multiple datasets were used. To analyze price points at various dates for cryptocurrencies a dataset from data.world.com [@cd] was used. The data for consumer confidence among OECD member states was taken from the OECD website [@leading_indicators_2022]. Gold prices were taken from the World Gold Council [@world-gold-council].
+This paper uses [@R-base] for statistical analyses with [@R-studioapi] as the intergrated development environment. Relevant packages include [@R-tidyverse], [@R-dplyr] and [@R-haven] for data management, manipulation and analysis.[@R-ggplot2] is used for the purposes of graphing and data visualization. [@R-bibtex] is used to generate a standardized citations that adhere to Bibtex standards. Multiple datasets were used. To analyze value points at various dates for cryptocurrencies a dataset from data.world.com [@cd] was used. The data for consumer confidence among OECD member states was taken from the OECD website [@leading_indicators_2022]. Gold values were taken from the World Gold Council [@world-gold-council].
 
 ## Cleaning the data
 
 For the dataset for consumer confidence among OECD member states [@leading_indicators_2022], a three-step cleaning process is applied. First, the Dplyer package [@R-dplyr] is used to select rows which show the cumulative OECD figures. Then the average for each month is calculated. This is followed by removing the figures for the entire OECD to make the dataset specific to OECD member states using the Tidyverse package [@R-tidyverse]. The data parsing for this dataset is concluded by converting the string values for each month to the date type [@lubridate].
 
-The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better. For gold, the dataset from the World Gold Council [@world-gold-council] is has two columns selected, one depicting the date and the other the price in United States' dollars. Then only the rows from the end of 2013 upto March 2022 are selected for further analysis.
+The dataset used for cryptocurrencies [@cd] is subject to only one data cleaning process, which consists of grouping rows by month to compare and contrast data from multiple datasets better. For gold, the dataset from the World Gold Council [@world-gold-council] is has two columns selected, one depicting the date and the other the value in United States' dollars. Then only the rows from the end of 2013 upto March 2022 are selected for further analysis.
 
 All three datasets' subset containing dates after September 2014 are then used for further analysis using the Tidyverse package [@R-tidyverse].     
 ```{r pressure, echo=FALSE, warning=FALSE}
@@ -72,7 +72,7 @@ data.table::setnames(
 cg %>% 
 data.table::setnames(
     old = "US dollar...2",
-    new = "price")
+    new = "value")
 cg <- subset(cg, cg$Date >= "2014-09-17")
 cd <- subset(cd, cd$Date <= "2022-03-31")
 cd2 <- cd
@@ -85,9 +85,17 @@ cd3$Date <- format(cd3$Date, "%Y-%m")
 cd3 %>% 
 data.table::setnames(
     old = "value",
-    new = "price")
+    new = "value")
 cc %>%
   mutate(cc$Group.1, ym(cc$Group.1))
+cc %>% 
+data.table::setnames(
+    old = "Group.1",
+    new = "Date")
+cc %>% 
+data.table::setnames(
+    old = "x",
+    new = "value")
 
 ```
 
@@ -100,7 +108,7 @@ cc %>%
 
 ### A comparison between gold and Bitcoin
 
-Lets take a look at the price of Bitcoin during our selected time period.
+Lets take a look at the value of Bitcoin during our selected time period.
   
 
 ```{r, echo=FALSE, fig.height=10, warning=FALSE}
@@ -111,15 +119,15 @@ ggplot(data=cd, mapping = aes(x = cd$Date, y = cd$Close, color = cd$Close))+
   coord_flip() +
   theme_minimal() +
   labs(
-    y="Bitcoin Price in USD",
+    y="Bitcoin value in USD",
   x=("Date") ,
-  caption = "Bitcoin Price in USD"
+  caption = "Bitcoin value in USD"
   )
 ```
 
 \newpage
 
-Followed by the price of gold in USD in the same time period.
+Followed by the value of gold in USD in the same time period.
 
 ```{r, echo=FALSE, fig.height=10, warning=FALSE}
 ggplot(data=cg, mapping = aes(x = cg$Date, y = cg$`US dollar...2`, color = cg$`US dollar...2`))+
@@ -129,9 +137,9 @@ ggplot(data=cg, mapping = aes(x = cg$Date, y = cg$`US dollar...2`, color = cg$`U
   coord_flip() +
   theme_minimal() +
   labs(
-    y="Price of Gold in USD",
+    y="value of Gold in USD",
   x=("Date") ,
-  caption = "Price of Gold in USD"
+  caption = "value of Gold in USD"
   )
 ```
 \newpage
@@ -148,7 +156,7 @@ geom_line(data=cd3, aes(x=cd3$Date, y=cd3$value), color='red')
 
 
 ```{r, echo=FALSE, fig.height=10, warning=FALSE}
-ggplot(data=cc, mapping = aes(x= cc$Group.1,y =cc$x,color=cc$x)) +
+ggplot(data=cc, mapping = aes(x= cc$Date,y =cc$x,color=cc$x)) +
   #geom_line()+
   geom_point()+
   #scale_x_date(date_breaks = "1 Year")+
